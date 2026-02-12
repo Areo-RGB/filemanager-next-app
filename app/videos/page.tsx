@@ -1,8 +1,8 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { ModeToggle } from "@/components/mode-toggle";
 import { FloatingDockDemo } from "@/components/floating-dock-demo";
+import { TopRightControls } from "@/components/top-right-controls";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -41,6 +41,10 @@ const PRELLWAND_VIDEOS = [
 
 const THUMBNAIL_VIDEO = PRELLWAND_VIDEOS[0].url;
 
+type WebkitFullscreenVideoElement = HTMLVideoElement & {
+    webkitRequestFullscreen?: () => Promise<void> | void;
+};
+
 const staticCards = [
     {
         image: "https://avatar.vercel.sh/livestream",
@@ -71,12 +75,15 @@ function VideoCard() {
         video.src = url;
         video.muted = false;
         video.currentTime = 0;
-        video.play();
+        void video.play();
 
         if (video.requestFullscreen) {
-            video.requestFullscreen();
-        } else if ((video as any).webkitRequestFullscreen) {
-            (video as any).webkitRequestFullscreen();
+            void video.requestFullscreen();
+        } else {
+            const videoWithWebkit = video as WebkitFullscreenVideoElement;
+            if (videoWithWebkit.webkitRequestFullscreen) {
+                void videoWithWebkit.webkitRequestFullscreen();
+            }
         }
     };
 
@@ -154,9 +161,7 @@ function VideoCard() {
 export default function VideosPage() {
     return (
         <>
-            <div className="fixed top-4 right-4 z-50">
-                <ModeToggle />
-            </div>
+            <TopRightControls />
             <main className="flex min-h-screen items-center justify-center px-4 pt-24 pb-16">
                 <div className="grid w-full max-w-5xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     <VideoCard />

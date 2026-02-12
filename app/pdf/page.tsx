@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { ModeToggle } from "@/components/mode-toggle";
 import { FloatingDockDemo } from "@/components/floating-dock-demo";
+import { TopRightControls } from "@/components/top-right-controls";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -37,9 +37,7 @@ const staticCards = [
 export default function PdfPage() {
     return (
         <>
-            <div className="fixed top-4 right-4 z-50">
-                <ModeToggle />
-            </div>
+            <TopRightControls />
             <main className="flex min-h-screen items-center justify-center px-4 pt-24 pb-16">
                 <div className="grid w-full max-w-5xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {/* D-Junioren card */}

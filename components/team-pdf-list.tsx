@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo, useRef } from "react";
-import { ArrowLeftIcon, FileTextIcon, HeartIcon, Loader2Icon } from "lucide-react";
+import { ArrowLeftIcon, FileTextIcon, HeartIcon } from "lucide-react";
 import Link from "next/link";
 import {
     type PdfItem,
@@ -13,33 +13,26 @@ interface TeamPdfListProps {
     team: string;
     title: string;
     backHref: string;
+    initialPdfs: PdfItem[];
+    initialError?: string | null;
 }
 
-export function TeamPdfList({ team, title, backHref }: TeamPdfListProps) {
-    const [pdfs, setPdfs] = useState<PdfItem[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    const [favUrls, setFavUrls] = useState<string[]>([]);
+export function TeamPdfList({
+    team,
+    title,
+    backHref,
+    initialPdfs,
+    initialError = null,
+}: TeamPdfListProps) {
+    const [favUrls, setFavUrls] = useState<string[]>(() => getFavouriteUrls(team));
     const [flashIdx, setFlashIdx] = useState<number | null>(null);
     const flashTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+    const pdfs = initialPdfs;
+    const error = initialError;
+
     // O(1) lookups instead of O(n) .includes()
     const favUrlSet = useMemo(() => new Set(favUrls), [favUrls]);
-
-    useEffect(() => {
-        setFavUrls(getFavouriteUrls(team));
-
-        fetch(`/api/d-junioren-pdfs?team=${team}`)
-            .then((res) => res.json())
-            .then((data) => {
-                setPdfs(data.pdfs || []);
-                setLoading(false);
-            })
-            .catch((err) => {
-                setError(String(err));
-                setLoading(false);
-            });
-    }, [team]);
 
     // Clean up flash timer on unmount
     useEffect(() => {
@@ -72,16 +65,8 @@ export function TeamPdfList({ team, title, backHref }: TeamPdfListProps) {
                 </h1>
             </div>
             <p className="mb-6 text-sm text-muted-foreground">
-                {loading
-                    ? "Lade Trainingsunterlagen…"
-                    : `${pdfs.length} Trainingsunterlagen und Übungen`}
+                {`${pdfs.length} Trainingsunterlagen und Übungen`}
             </p>
-
-            {loading ? (
-                <div className="flex items-center justify-center py-16">
-                    <Loader2Icon className="h-6 w-6 animate-spin text-muted-foreground" />
-                </div>
-            ) : null}
 
             {error ? (
                 <div className="rounded-lg border border-destructive/50 bg-destructive/10 px-4 py-3 text-sm text-destructive">
@@ -89,7 +74,7 @@ export function TeamPdfList({ team, title, backHref }: TeamPdfListProps) {
                 </div>
             ) : null}
 
-            {!loading && !error ? (
+            {!error ? (
                 <div className="flex flex-col overflow-hidden rounded-lg border">
                     {pdfs.map((pdf, idx) => {
                         const isFav = favUrlSet.has(pdf.url);
