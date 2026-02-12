@@ -47,7 +47,7 @@ export default function PdfPage() {
                         <div className="relative aspect-video w-full overflow-hidden rounded-t-xl">
                             <div className="absolute inset-0 z-30 bg-black/35" />
                             <img
-                                src="https://avatar.vercel.sh/d-junioren"
+                                src="/d-junioren-thumb.png"
                                 alt="D-Junioren"
                                 className="relative z-20 aspect-video w-full object-cover brightness-60 grayscale dark:brightness-40"
                             />
@@ -83,7 +83,7 @@ export default function PdfPage() {
                         <div className="relative aspect-video w-full overflow-hidden rounded-t-xl">
                             <div className="absolute inset-0 z-30 bg-black/35" />
                             <img
-                                src="https://avatar.vercel.sh/e-junioren"
+                                src="/e-junioren-thumb.png"
                                 alt="E-Junioren"
                                 className="relative z-20 aspect-video w-full object-cover brightness-60 grayscale dark:brightness-40"
                             />
