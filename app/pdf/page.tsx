@@ -1,7 +1,10 @@
+"use client";
+
+import Link from "next/link";
 import { ModeToggle } from "@/components/mode-toggle";
 import { FloatingDockDemo } from "@/components/floating-dock-demo";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import {
     Card,
     CardAction,
@@ -10,16 +13,9 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
-const pdfCards = [
-    {
-        image: "https://avatar.vercel.sh/training-manual",
-        badge: "Guide",
-        title: "Training Manual",
-        description:
-            "Complete training plan with drills, exercises, and weekly schedules for all levels.",
-        action: "View PDF",
-    },
+const staticCards = [
     {
         image: "https://avatar.vercel.sh/game-rules",
         badge: "Official",
@@ -46,7 +42,79 @@ export default function PdfPage() {
             </div>
             <main className="flex min-h-screen items-center justify-center px-4 pt-24 pb-16">
                 <div className="grid w-full max-w-5xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    {pdfCards.map((card) => (
+                    {/* D-Junioren card */}
+                    <Card className="relative w-full pt-0">
+                        <div className="relative aspect-video w-full overflow-hidden rounded-t-xl">
+                            <div className="absolute inset-0 z-30 bg-black/35" />
+                            <img
+                                src="https://avatar.vercel.sh/d-junioren"
+                                alt="D-Junioren"
+                                className="relative z-20 aspect-video w-full object-cover brightness-60 grayscale dark:brightness-40"
+                            />
+                        </div>
+                        <CardHeader>
+                            <CardAction>
+                                <Badge variant="secondary">Guide</Badge>
+                            </CardAction>
+                            <CardTitle>D-Junioren</CardTitle>
+                            <CardDescription>
+                                Trainingsunterlagen und Übungen für die
+                                D-Junioren Mannschaft.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardFooter className="flex gap-2">
+                            <Link
+                                href="/pdf/d-junioren"
+                                className={buttonVariants({ variant: "default", className: "w-1/2" })}
+                            >
+                                View Files
+                            </Link>
+                            <Link
+                                href="/pdf/d-junioren/favourites"
+                                className={buttonVariants({ variant: "outline", className: "w-1/2" })}
+                            >
+                                Favourites
+                            </Link>
+                        </CardFooter>
+                    </Card>
+
+                    {/* E-Junioren card */}
+                    <Card className="relative w-full pt-0">
+                        <div className="relative aspect-video w-full overflow-hidden rounded-t-xl">
+                            <div className="absolute inset-0 z-30 bg-black/35" />
+                            <img
+                                src="https://avatar.vercel.sh/e-junioren"
+                                alt="E-Junioren"
+                                className="relative z-20 aspect-video w-full object-cover brightness-60 grayscale dark:brightness-40"
+                            />
+                        </div>
+                        <CardHeader>
+                            <CardAction>
+                                <Badge variant="secondary">Guide</Badge>
+                            </CardAction>
+                            <CardTitle>E-Junioren</CardTitle>
+                            <CardDescription>
+                                Trainingsunterlagen und Übungen für die
+                                E-Junioren Mannschaft.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardFooter className="flex gap-2">
+                            <Link
+                                href="/pdf/e-junioren"
+                                className={buttonVariants({ variant: "default", className: "w-1/2" })}
+                            >
+                                View Files
+                            </Link>
+                            <Link
+                                href="/pdf/e-junioren/favourites"
+                                className={buttonVariants({ variant: "outline", className: "w-1/2" })}
+                            >
+                                Favourites
+                            </Link>
+                        </CardFooter>
+                    </Card>
+
+                    {staticCards.map((card) => (
                         <Card key={card.title} className="relative w-full pt-0">
                             <div className="absolute inset-0 z-30 aspect-video bg-black/35" />
                             <img
