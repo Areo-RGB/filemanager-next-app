@@ -40,7 +40,7 @@ const VIDEO_COURSES: VideoCourse[] = [
             "Watch the full training sessions and improve your technique step by step.",
         badge: "Popular",
         thumbnailUrl:
-            "https://drills.fra1.cdn.digitaloceanspaces.com/videos/prellwand/Timeline_1_00000000.mp4",
+            "https://drills.fra1.cdn.digitaloceanspaces.com/videos/prellwand/Timeline_1_00000000.mp4#t=0.1",
         videos: [
             {
                 label: "Prellwand – Take 1",
@@ -66,7 +66,7 @@ const VIDEO_COURSES: VideoCourse[] = [
             "Advanced coordination and footwork drills with Leiter V2.",
         badge: "New",
         thumbnailUrl:
-            "https://drills.fra1.cdn.digitaloceanspaces.com/videos/Leiter2/02_Diagonal_Forwards_Backwards.mp4",
+            "https://drills.fra1.cdn.digitaloceanspaces.com/videos/Leiter2/02_Diagonal_Forwards_Backwards.mp4#t=0.1",
         videos: [
             {
                 label: "02 Diagonal Forwards Backwards",
@@ -147,19 +147,19 @@ function VideoCard({ course }: { course: VideoCourse }) {
     };
 
     return (
-        <Card className="relative w-full pt-0">
+        <Card className="relative flex h-full w-full flex-col pt-0">
             {/* Hidden fullscreen player */}
             <video ref={videoRef} controls playsInline className="hidden" />
 
             {/* Thumbnail preview */}
-            <div className="relative aspect-video w-full overflow-hidden rounded-t-xl">
+            <div className="relative w-full shrink-0 overflow-hidden rounded-t-xl pb-[56.25%]">
                 <div className="absolute inset-0 z-30 bg-black/25" />
                 <video
                     src={course.thumbnailUrl}
                     muted
                     preload="metadata"
                     playsInline
-                    className="relative z-20 h-full w-full object-cover"
+                    className="absolute inset-0 z-20 h-full w-full object-cover"
                 />
                 <div className="pointer-events-none absolute inset-0 z-40 flex items-center justify-center">
                     <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
@@ -168,7 +168,7 @@ function VideoCard({ course }: { course: VideoCourse }) {
                 </div>
             </div>
 
-            <CardHeader>
+            <CardHeader className="flex-1">
                 <CardAction>
                     <Badge variant="secondary">{course.badge}</Badge>
                 </CardAction>
@@ -176,7 +176,7 @@ function VideoCard({ course }: { course: VideoCourse }) {
                 <CardDescription>{course.description}</CardDescription>
             </CardHeader>
 
-            <CardFooter className="flex-col items-center gap-2">
+            <CardFooter className="mt-auto flex-col items-center gap-2">
                 <Collapsible
                     open={isOpen}
                     onOpenChange={setIsOpen}
@@ -214,19 +214,22 @@ export default function VideosPage() {
         <>
             <TopRightControls />
             <main className="flex min-h-screen items-start justify-center px-4 pb-16 pt-24">
-                <div className="grid w-full max-w-5xl grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid w-full max-w-5xl grid-cols-1 items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {VIDEO_COURSES.map((course) => (
                         <VideoCard key={course.title} course={course} />
                     ))}
                     {staticCards.map((card) => (
-                        <Card key={card.title} className="relative w-full pt-0">
-                            <div className="absolute inset-0 z-30 aspect-video rounded-t-xl bg-black/35" />
+                        <Card key={card.title} className="relative flex h-full w-full flex-col pt-0">
+                            <div className="absolute inset-0 z-30 shrink-0 pb-[56.25%] rounded-t-xl bg-black/35" />
                             <img
                                 src={card.image}
                                 alt={card.title}
-                                className="relative z-20 aspect-video w-full rounded-t-xl object-cover grayscale brightness-60 dark:brightness-40"
+                                className="relative z-20 shrink-0 pb-[56.25%] w-full rounded-t-xl object-cover grayscale brightness-60 dark:brightness-40"
+                                style={{ position: "absolute", height: "100%", paddingBottom: 0 }}
                             />
-                            <CardHeader>
+                            {/* Adding a placeholder to constrain layout appropriately */}
+                            <div className="relative w-full shrink-0 pb-[56.25%]" />
+                            <CardHeader className="flex-1">
                                 <CardAction>
                                     <Badge variant="secondary">
                                         {card.badge}
@@ -237,7 +240,7 @@ export default function VideosPage() {
                                     {card.description}
                                 </CardDescription>
                             </CardHeader>
-                            <CardFooter>
+                            <CardFooter className="mt-auto">
                                 <Button className="w-full">
                                     {card.action}
                                 </Button>
