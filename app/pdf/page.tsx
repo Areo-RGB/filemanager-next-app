@@ -1,4 +1,4 @@
-"use client";
+import Image from "next/image";
 
 import Link from "next/link";
 import { FloatingDockDemo } from "@/components/floating-dock-demo";
@@ -46,9 +46,11 @@ export default function PdfPage() {
                     {/* D-Junioren card */}
                     <Card className="relative w-full pt-0">
                         <div className="relative aspect-video w-full overflow-hidden rounded-t-xl">
-                            <img
+                            <Image
                                 src="/d-junioren-thumb.png"
                                 alt="D-Junioren"
+                                width={800}
+                                height={450}
                                 className="relative z-20 aspect-video w-full object-cover"
                             />
                         </div>
@@ -81,9 +83,11 @@ export default function PdfPage() {
                     {/* E-Junioren card */}
                     <Card className="relative w-full pt-0">
                         <div className="relative aspect-video w-full overflow-hidden rounded-t-xl">
-                            <img
+                            <Image
                                 src="/e-junioren-thumb.png"
                                 alt="E-Junioren"
+                                width={800}
+                                height={450}
                                 className="relative z-20 aspect-video w-full object-cover"
                             />
                         </div>
@@ -115,9 +119,11 @@ export default function PdfPage() {
 
                     {staticCards.map((card) => (
                         <Card key={card.title} className="relative w-full pt-0">
-                            <img
+                            <Image
                                 src={card.image}
                                 alt={card.title}
+                                width={800}
+                                height={450}
                                 className="relative z-20 aspect-video w-full object-cover"
                             />
                             <CardHeader>

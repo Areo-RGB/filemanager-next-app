@@ -20,40 +20,99 @@ import {
 } from "@/components/ui/collapsible";
 import { PlayIcon, ChevronsUpDown } from "lucide-react";
 
-const PRELLWAND_VIDEOS = [
+type VideoFile = {
+    label: string;
+    url: string;
+};
+
+type VideoCourse = {
+    title: string;
+    description: string;
+    badge: string;
+    thumbnailUrl: string;
+    videos: VideoFile[];
+};
+
+const VIDEO_COURSES: VideoCourse[] = [
     {
-        label: "Prellwand – Take 1",
-        url: "https://drills.fra1.cdn.digitaloceanspaces.com/videos/prellwand/Timeline_1_00000000.mp4",
+        title: "Prellwand Training",
+        description:
+            "Watch the full training sessions and improve your technique step by step.",
+        badge: "Popular",
+        thumbnailUrl:
+            "https://drills.fra1.cdn.digitaloceanspaces.com/videos/prellwand/Timeline_1_00000000.mp4",
+        videos: [
+            {
+                label: "Prellwand – Take 1",
+                url: "https://drills.fra1.cdn.digitaloceanspaces.com/videos/prellwand/Timeline_1_00000000.mp4",
+            },
+            {
+                label: "Prellwand – Take 2",
+                url: "https://drills.fra1.cdn.digitaloceanspaces.com/videos/prellwand/Timeline_1x00000000.mp4",
+            },
+            {
+                label: "Prellwand – Take 3",
+                url: "https://drills.fra1.cdn.digitaloceanspaces.com/videos/prellwand/Timeline_1xx00000000.mp4",
+            },
+            {
+                label: "Prellwand – Take 4",
+                url: "https://drills.fra1.cdn.digitaloceanspaces.com/videos/prellwand/Timeline_1xxs00000000.mp4",
+            },
+        ],
     },
     {
-        label: "Prellwand – Take 2",
-        url: "https://drills.fra1.cdn.digitaloceanspaces.com/videos/prellwand/Timeline_1x00000000.mp4",
-    },
-    {
-        label: "Prellwand – Take 3",
-        url: "https://drills.fra1.cdn.digitaloceanspaces.com/videos/prellwand/Timeline_1xx00000000.mp4",
-    },
-    {
-        label: "Prellwand – Take 4",
-        url: "https://drills.fra1.cdn.digitaloceanspaces.com/videos/prellwand/Timeline_1xxs00000000.mp4",
+        title: "Leiter V2",
+        description:
+            "Advanced coordination and footwork drills with Leiter V2.",
+        badge: "New",
+        thumbnailUrl:
+            "https://drills.fra1.cdn.digitaloceanspaces.com/videos/Leiter2/02_Diagonal_Forwards_Backwards.mp4",
+        videos: [
+            {
+                label: "02 Diagonal Forwards Backwards",
+                url: "https://drills.fra1.cdn.digitaloceanspaces.com/videos/Leiter2/02_Diagonal_Forwards_Backwards.mp4",
+            },
+            {
+                label: "03 Inside Outside Forwards",
+                url: "https://drills.fra1.cdn.digitaloceanspaces.com/videos/Leiter2/03_Inside_Outside_Forwards.mp4",
+            },
+            {
+                label: "04 Inside Outside Across",
+                url: "https://drills.fra1.cdn.digitaloceanspaces.com/videos/Leiter2/04_Inside_Outside_Across.mp4",
+            },
+            {
+                label: "05 Crossover Shuffle",
+                url: "https://drills.fra1.cdn.digitaloceanspaces.com/videos/Leiter2/05_Crossover_Shuffle.mp4",
+            },
+            {
+                label: "06 Behind Foot Inside Outside",
+                url: "https://drills.fra1.cdn.digitaloceanspaces.com/videos/Leiter2/06_Behind_Foot_Inside_Outside.mp4",
+            },
+            {
+                label: "07 Behind Foot Inside Outside Across",
+                url: "https://drills.fra1.cdn.digitaloceanspaces.com/videos/Leiter2/07_Behind_Foot_Inside_Outside_Across.mp4",
+            },
+            {
+                label: "08 Advanced Hopscotch",
+                url: "https://drills.fra1.cdn.digitaloceanspaces.com/videos/Leiter2/08_Advanced_Hopscotch.mp4",
+            },
+            {
+                label: "09 Inside Outside Crossovers",
+                url: "https://drills.fra1.cdn.digitaloceanspaces.com/videos/Leiter2/09_Inside_Outside_Crossovers.mp4",
+            },
+            {
+                label: "10 Footwork Combo",
+                url: "https://drills.fra1.cdn.digitaloceanspaces.com/videos/Leiter2/10_Footwork_Combo.mp4",
+            },
+        ],
     },
 ];
-
-const THUMBNAIL_VIDEO = PRELLWAND_VIDEOS[0].url;
 
 type WebkitFullscreenVideoElement = HTMLVideoElement & {
     webkitRequestFullscreen?: () => Promise<void> | void;
 };
 
 const staticCards = [
-    {
-        image: "https://avatar.vercel.sh/livestream",
-        badge: "Live",
-        title: "Building a design system",
-        description:
-            "Live coding session on creating reusable components with consistent theming.",
-        action: "Join Stream",
-    },
     {
         image: "https://avatar.vercel.sh/masterclass",
         badge: "Premium",
@@ -64,7 +123,7 @@ const staticCards = [
     },
 ];
 
-function VideoCard() {
+function VideoCard({ course }: { course: VideoCourse }) {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -90,18 +149,13 @@ function VideoCard() {
     return (
         <Card className="relative w-full pt-0">
             {/* Hidden fullscreen player */}
-            <video
-                ref={videoRef}
-                controls
-                playsInline
-                className="hidden"
-            />
+            <video ref={videoRef} controls playsInline className="hidden" />
 
             {/* Thumbnail preview */}
             <div className="relative aspect-video w-full overflow-hidden rounded-t-xl">
                 <div className="absolute inset-0 z-30 bg-black/25" />
                 <video
-                    src={THUMBNAIL_VIDEO}
+                    src={course.thumbnailUrl}
                     muted
                     preload="metadata"
                     playsInline
@@ -116,13 +170,10 @@ function VideoCard() {
 
             <CardHeader>
                 <CardAction>
-                    <Badge variant="secondary">Popular</Badge>
+                    <Badge variant="secondary">{course.badge}</Badge>
                 </CardAction>
-                <CardTitle>Prellwand Training</CardTitle>
-                <CardDescription>
-                    Watch the full training sessions and improve your technique
-                    step by step.
-                </CardDescription>
+                <CardTitle>{course.title}</CardTitle>
+                <CardDescription>{course.description}</CardDescription>
             </CardHeader>
 
             <CardFooter className="flex-col items-center gap-2">
@@ -140,8 +191,8 @@ function VideoCard() {
                             </Button>
                         }
                     />
-                    <CollapsibleContent className="mt-2 flex flex-col gap-1.5">
-                        {PRELLWAND_VIDEOS.map((video, idx) => (
+                    <CollapsibleContent className="mt-2 flex max-h-60 flex-col gap-1.5 overflow-y-auto pr-1">
+                        {course.videos.map((video, idx) => (
                             <button
                                 key={idx}
                                 onClick={() => handlePlayVideo(video.url)}
@@ -162,16 +213,18 @@ export default function VideosPage() {
     return (
         <>
             <TopRightControls />
-            <main className="flex min-h-screen items-center justify-center px-4 pt-24 pb-16">
-                <div className="grid w-full max-w-5xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    <VideoCard />
+            <main className="flex min-h-screen items-start justify-center px-4 pb-16 pt-24">
+                <div className="grid w-full max-w-5xl grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    {VIDEO_COURSES.map((course) => (
+                        <VideoCard key={course.title} course={course} />
+                    ))}
                     {staticCards.map((card) => (
                         <Card key={card.title} className="relative w-full pt-0">
-                            <div className="absolute inset-0 z-30 aspect-video bg-black/35" />
+                            <div className="absolute inset-0 z-30 aspect-video rounded-t-xl bg-black/35" />
                             <img
                                 src={card.image}
                                 alt={card.title}
-                                className="relative z-20 aspect-video w-full object-cover brightness-60 grayscale dark:brightness-40"
+                                className="relative z-20 aspect-video w-full rounded-t-xl object-cover grayscale brightness-60 dark:brightness-40"
                             />
                             <CardHeader>
                                 <CardAction>

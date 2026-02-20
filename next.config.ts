@@ -11,6 +11,18 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["lucide-react", "@tabler/icons-react"],
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "avatar.vercel.sh",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      }
+    ]
+  },
   // Silence Turbopack warning with Serwist injected webpack config
   turbopack: {},
 };
