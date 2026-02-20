@@ -11,6 +11,9 @@
 !.yarn/versions
 .agent
 .agents
+.claude
+.cursor
+
 # testing
 /coverage
 

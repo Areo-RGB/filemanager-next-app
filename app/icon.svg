@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <path d="M8 84V16C8 11.5817 11.5817 8 16 8H38.5858C40.7075 8 42.742 8.84285 44.2426 10.3431L51.7574 17.8579C53.258 19.3581 55.2925 20.201 57.4142 20.201H84C88.4183 20.201 92 23.7827 92 28.201V84C92 88.4183 88.4183 92 84 92H16C11.5817 92 8 88.4183 8 84Z" fill="url(#folderGradient)"/>
+  <path d="M11 92L24 35H95L82 92H11Z" fill="url(#frontGradient)"/>
+  <defs>
+    <linearGradient id="folderGradient" x1="50" y1="8" x2="50" y2="92" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2563EB"/>
+      <stop offset="1" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <linearGradient id="frontGradient" x1="53" y1="35" x2="53" y2="92" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#60A5FA"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+  </defs>
+</svg>

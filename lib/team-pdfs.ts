@@ -9,6 +9,7 @@ const CDN_URL = "https://drills.fra1.cdn.digitaloceanspaces.com";
 const TEAM_PREFIXES = {
     "d-junioren": "Junioren Training/D-Junioren/",
     "e-junioren": "Junioren Training/E-Junioren/",
+    "soccer-drills": "Junioren Training/SoccerXpert_U10-U12_Drills4/",
 } as const;
 
 export type TeamSlug = keyof typeof TEAM_PREFIXES;
