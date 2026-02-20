@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { FloatingDockDemo } from "@/components/floating-dock-demo";
 import { TopRightControls } from "@/components/top-right-controls";
 import { Badge } from "@/components/ui/badge";
@@ -127,22 +127,110 @@ function VideoCard({ course }: { course: VideoCourse }) {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [isOpen, setIsOpen] = useState(false);
 
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        const handleFullscreenChange = () => {
+            if (!document.fullscreenElement && !(document as any).webkitFullscreenElement) {
+                video.classList.add("hidden");
+                video.pause();
+                try {
+                    const orientation = screen.orientation as any;
+                    if (orientation && orientation.unlock) {
+                        orientation.unlock();
+                    }
+                } catch (e) {
+                    console.error("Error unlocking orientation:", e);
+                }
+            }
+        };
+
+        let touchStartY = 0;
+        let touchStartX = 0;
+
+        const handleTouchStart = (e: TouchEvent) => {
+            touchStartY = e.touches[0].clientY;
+            touchStartX = e.touches[0].clientX;
+        };
+
+        const handleTouchEnd = (e: TouchEvent) => {
+            const touchEndY = e.changedTouches[0].clientY;
+            const touchEndX = e.changedTouches[0].clientX;
+
+            const diffY = touchEndY - touchStartY;
+            const diffX = touchEndX - touchStartX;
+
+            // Ensure it's mostly a vertical swipe (down) and longer than 50px
+            if (Math.abs(diffY) > Math.abs(diffX) && diffY > 50) {
+                const newRate = Math.max(0.1, video.playbackRate - 0.1);
+                // Fix floating point precision
+                video.playbackRate = Math.round(newRate * 10) / 10;
+            }
+        };
+
+        video.addEventListener("fullscreenchange", handleFullscreenChange);
+        video.addEventListener("webkitfullscreenchange", handleFullscreenChange);
+        video.addEventListener("touchstart", handleTouchStart);
+        video.addEventListener("touchend", handleTouchEnd);
+
+        return () => {
+            video.removeEventListener("fullscreenchange", handleFullscreenChange);
+            video.removeEventListener("webkitfullscreenchange", handleFullscreenChange);
+            video.removeEventListener("touchstart", handleTouchStart);
+            video.removeEventListener("touchend", handleTouchEnd);
+        };
+    }, []);
+
     const handlePlayVideo = (url: string) => {
         const video = videoRef.current;
         if (!video) return;
 
+        video.classList.remove("hidden");
         video.src = url;
-        video.muted = false;
+        video.muted = true;
+        video.playbackRate = 1.0;
         video.currentTime = 0;
         void video.play();
 
-        if (video.requestFullscreen) {
-            void video.requestFullscreen();
-        } else {
-            const videoWithWebkit = video as WebkitFullscreenVideoElement;
-            if (videoWithWebkit.webkitRequestFullscreen) {
-                void videoWithWebkit.webkitRequestFullscreen();
+        const enterFullscreenAndLock = () => {
+            const lockLandscape = () => {
+                if (video.videoWidth > video.videoHeight) {
+                    try {
+                        const orientation = screen.orientation as any;
+                        if (orientation && orientation.lock) {
+                            void orientation.lock("landscape");
+                        }
+                    } catch (e) {
+                        console.error("Error locking orientation:", e);
+                    }
+                }
+            };
+
+            if (video.requestFullscreen) {
+                video.requestFullscreen().then(() => {
+                    lockLandscape();
+                }).catch((err) => {
+                    console.error("Error attempting to enable fullscreen:", err);
+                    video.classList.add("hidden");
+                });
+            } else {
+                const videoWithWebkit = video as WebkitFullscreenVideoElement;
+                if (videoWithWebkit.webkitRequestFullscreen) {
+                    void videoWithWebkit.webkitRequestFullscreen();
+                    lockLandscape();
+                }
             }
+        };
+
+        if (video.readyState >= 1) {
+            enterFullscreenAndLock();
+        } else {
+            const onLoadedMetadata = () => {
+                enterFullscreenAndLock();
+                video.removeEventListener("loadedmetadata", onLoadedMetadata);
+            };
+            video.addEventListener("loadedmetadata", onLoadedMetadata);
         }
     };
 
