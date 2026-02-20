@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback, memo } from "react";
 import { FloatingDockDemo } from "@/components/floating-dock-demo";
 import { TopRightControls } from "@/components/top-right-controls";
 import { Badge } from "@/components/ui/badge";
@@ -112,6 +112,15 @@ type WebkitFullscreenVideoElement = HTMLVideoElement & {
     webkitRequestFullscreen?: () => Promise<void> | void;
 };
 
+type ExtendedDocument = Document & {
+    webkitFullscreenElement?: Element;
+};
+
+type ExtendedOrientation = ScreenOrientation & {
+    unlock?: () => void;
+    lock?: (orientation: string) => Promise<void>;
+};
+
 const staticCards = [
     {
         image: "https://avatar.vercel.sh/masterclass",
@@ -123,6 +132,28 @@ const staticCards = [
     },
 ];
 
+const VideoItem = memo(function VideoItem({
+    video,
+    onPlay,
+}: {
+    video: VideoFile;
+    onPlay: (url: string) => void;
+}) {
+    const handleClick = useCallback(() => {
+        onPlay(video.url);
+    }, [onPlay, video.url]);
+
+    return (
+        <button
+            onClick={handleClick}
+            className="flex w-full items-center gap-2 rounded-md border px-3 py-2 text-left text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+        >
+            <PlayIcon className="h-3.5 w-3.5 shrink-0 opacity-60" />
+            {video.label}
+        </button>
+    );
+});
+
 function VideoCard({ course }: { course: VideoCourse }) {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [isOpen, setIsOpen] = useState(false);
@@ -132,11 +163,11 @@ function VideoCard({ course }: { course: VideoCourse }) {
         if (!video) return;
 
         const handleFullscreenChange = () => {
-            if (!document.fullscreenElement && !(document as any).webkitFullscreenElement) {
+            if (!document.fullscreenElement && !(document as ExtendedDocument).webkitFullscreenElement) {
                 video.classList.add("hidden");
                 video.pause();
                 try {
-                    const orientation = screen.orientation as any;
+                    const orientation = screen.orientation as ExtendedOrientation;
                     if (orientation && orientation.unlock) {
                         orientation.unlock();
                     }
@@ -182,7 +213,7 @@ function VideoCard({ course }: { course: VideoCourse }) {
         };
     }, []);
 
-    const handlePlayVideo = (url: string) => {
+    const handlePlayVideo = useCallback((url: string) => {
         const video = videoRef.current;
         if (!video) return;
 
@@ -197,7 +228,7 @@ function VideoCard({ course }: { course: VideoCourse }) {
             const lockLandscape = () => {
                 if (video.videoWidth > video.videoHeight) {
                     try {
-                        const orientation = screen.orientation as any;
+                        const orientation = screen.orientation as ExtendedOrientation;
                         if (orientation && orientation.lock) {
                             void orientation.lock("landscape");
                         }
@@ -232,7 +263,7 @@ function VideoCard({ course }: { course: VideoCourse }) {
             };
             video.addEventListener("loadedmetadata", onLoadedMetadata);
         }
-    };
+    }, []);
 
     return (
         <Card className="relative flex h-full w-full flex-col pt-0">
@@ -281,14 +312,11 @@ function VideoCard({ course }: { course: VideoCourse }) {
                     />
                     <CollapsibleContent className="mt-2 flex max-h-60 flex-col gap-1.5 overflow-y-auto pr-1">
                         {course.videos.map((video, idx) => (
-                            <button
+                            <VideoItem
                                 key={idx}
-                                onClick={() => handlePlayVideo(video.url)}
-                                className="flex w-full items-center gap-2 rounded-md border px-3 py-2 text-left text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
-                            >
-                                <PlayIcon className="h-3.5 w-3.5 shrink-0 opacity-60" />
-                                {video.label}
-                            </button>
+                                video={video}
+                                onPlay={handlePlayVideo}
+                            />
                         ))}
                     </CollapsibleContent>
                 </Collapsible>
@@ -309,6 +337,7 @@ export default function VideosPage() {
                     {staticCards.map((card) => (
                         <Card key={card.title} className="relative flex h-full w-full flex-col pt-0">
                             <div className="absolute inset-0 z-30 shrink-0 pb-[56.25%] rounded-t-xl bg-black/35" />
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                                 src={card.image}
                                 alt={card.title}
