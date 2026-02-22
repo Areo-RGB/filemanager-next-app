@@ -18,7 +18,7 @@ import {
     CollapsibleContent,
     CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { PlayIcon, ChevronsUpDown } from "lucide-react";
+import { PlayIcon, ChevronDown, ChevronUp } from "lucide-react";
 
 type VideoFile = {
     label: string;
@@ -330,9 +330,7 @@ function VideoCard({ course }: { course: VideoCourse }) {
                     <CollapsibleTrigger
                         render={
                             <Button variant="ghost" className="w-full rounded-none border-t">
-                                <PlayIcon className="mr-2 h-4 w-4" />
-                                {isOpen ? "Hide Videos" : "Watch Now"}
-                                <ChevronsUpDown className="ml-auto h-4 w-4 opacity-50" />
+                                {isOpen ? <ChevronUp className="h-4 w-4 opacity-50" /> : <ChevronDown className="h-4 w-4 opacity-50" />}
                             </Button>
                         }
                     />
