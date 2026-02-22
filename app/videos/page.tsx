@@ -172,7 +172,7 @@ const VideoItem = memo(function VideoItem({
     return (
         <button
             onClick={handleClick}
-            className="flex w-full items-center gap-2 rounded-md border px-3 py-2 text-left text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+            className="flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm transition-colors hover:bg-muted"
         >
             <PlayIcon className="h-3.5 w-3.5 shrink-0 opacity-60" />
             {video.label}
@@ -321,7 +321,7 @@ function VideoCard({ course }: { course: VideoCourse }) {
                 <CardDescription>{course.description}</CardDescription>
             </CardHeader>
 
-            <CardFooter className="mt-auto flex-col items-center gap-2">
+            <CardFooter className="mt-auto flex-col items-stretch p-0">
                 <Collapsible
                     open={isOpen}
                     onOpenChange={setIsOpen}
@@ -329,14 +329,14 @@ function VideoCard({ course }: { course: VideoCourse }) {
                 >
                     <CollapsibleTrigger
                         render={
-                            <Button variant="outline" className="w-full">
+                            <Button variant="ghost" className="w-full rounded-none border-t">
                                 <PlayIcon className="mr-2 h-4 w-4" />
                                 {isOpen ? "Hide Videos" : "Watch Now"}
                                 <ChevronsUpDown className="ml-auto h-4 w-4 opacity-50" />
                             </Button>
                         }
                     />
-                    <CollapsibleContent className="mt-2 flex max-h-60 flex-col gap-1.5 overflow-y-auto pr-1">
+                    <CollapsibleContent className="flex max-h-60 flex-col divide-y overflow-y-auto border-t">
                         {course.videos.map((video, idx) => (
                             <VideoItem
                                 key={idx}
