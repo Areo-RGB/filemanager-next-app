@@ -106,6 +106,32 @@ const VIDEO_COURSES: VideoCourse[] = [
             },
         ],
     },
+    {
+        title: "5 Easy Beginner Juggling",
+        description:
+            "Master the fundamentals of ball juggling with these 4 easy beginner drills.",
+        badge: "Beginner",
+        thumbnailUrl:
+            "https://drills.fra1.cdn.digitaloceanspaces.com/videos/5_Easy_Beginner_Juggling/002_Half%20Around%20The%20World.mp4#t=0.1",
+        videos: [
+            {
+                label: "Half Around The World",
+                url: "https://drills.fra1.cdn.digitaloceanspaces.com/videos/5_Easy_Beginner_Juggling/002_Half%20Around%20The%20World.mp4",
+            },
+            {
+                label: "Crossover",
+                url: "https://drills.fra1.cdn.digitaloceanspaces.com/videos/5_Easy_Beginner_Juggling/003_Crossover.mp4",
+            },
+            {
+                label: "Heel Juggle",
+                url: "https://drills.fra1.cdn.digitaloceanspaces.com/videos/5_Easy_Beginner_Juggling/004_Heel%20Juggle.mp4",
+            },
+            {
+                label: "The Slap",
+                url: "https://drills.fra1.cdn.digitaloceanspaces.com/videos/5_Easy_Beginner_Juggling/005_The%20Slap.mp4",
+            },
+        ],
+    },
 ];
 
 type WebkitFullscreenVideoElement = HTMLVideoElement & {
