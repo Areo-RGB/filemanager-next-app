@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { FloatingDockDemo } from "@/components/floating-dock-demo";
+import { TopRightControls } from "@/components/top-right-controls";
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -42,7 +44,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <TopRightControls />
           {children}
+          <FloatingDockDemo />
         </ThemeProvider>
         <script
           dangerouslySetInnerHTML={{

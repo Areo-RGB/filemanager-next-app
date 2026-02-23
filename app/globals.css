@@ -132,6 +132,10 @@
     @apply bg-background text-foreground;
   }
 
+  body.hide-dock .floating-dock {
+    display: none !important;
+  }
+
   .font-display {
     font-weight: var(--display-weight);
   }

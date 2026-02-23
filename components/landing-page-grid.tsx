@@ -1,68 +1,79 @@
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 import {
-  IconAdjustmentsBolt,
-  IconCloud,
-  IconCurrencyDollar,
-  IconEaseInOut,
-  IconHeart,
-  IconHelp,
-  IconRouteAltLeft,
-  IconTerminal2,
+  IconSoccerField,
+  IconRun,
+  IconTarget,
+  IconUsers,
+  IconChartBar,
+  IconCircleCheck,
+  IconBrain,
 } from "@tabler/icons-react";
+import { IconCoordination } from "@/components/icons/icon-coordination";
 
-export default function FeaturesSectionDemo() {
+export default function LandingPageGrid() {
   const features = [
     {
-      title: "Built for developers",
+      title: "Dribbling",
       description:
-        "Built for engineers, developers, dreamers, thinkers and doers.",
-      icon: <IconTerminal2 />,
+        "Verbessere deine Ballführung unter Druck und lerne, Gegner spielend zu umgehen.",
+      icon: <IconSoccerField />,
     },
     {
-      title: "Ease of use",
+      title: "Passen",
       description:
-        "It's as easy as using an Apple, and as expensive as buying one.",
-      icon: <IconEaseInOut />,
+        "Präzision und Timing sind der Schlüssel. Werde zum Taktgeber deines Teams.",
+      icon: <IconCircleCheck />,
     },
     {
-      title: "Pricing like no other",
+      title: "Schießen",
       description:
-        "Our prices are best in the market. No cap, no lock, no credit card required.",
-      icon: <IconCurrencyDollar />,
+        "Entwickle Kraft und Genauigkeit für den perfekten Abschluss vor dem Tor.",
+      icon: <IconTarget />,
     },
     {
-      title: "100% Uptime guarantee",
-      description: "We just cannot be taken down by anyone.",
-      icon: <IconCloud />,
-    },
-    {
-      title: "Multi-tenant Architecture",
-      description: "You can simply share passwords instead of buying new seats",
-      icon: <IconRouteAltLeft />,
-    },
-    {
-      title: "24/7 Customer Support",
+      title: "Technik",
       description:
-        "We are available a 100% of the time. Atleast our AI Agents are.",
-      icon: <IconHelp />,
+        "Verfeinere dein Ballgefühl und beherrsche jede Situation auf dem Platz.",
+      icon: <IconChartBar />,
     },
     {
-      title: "Money back guarantee",
+      title: "Athletik",
       description:
-        "If you donot like EveryAI, we will convince you to like us.",
-      icon: <IconAdjustmentsBolt />,
+        "Steigere deine Schnelligkeit, Kraft und Ausdauer für die vollen 90 Minuten.",
+      icon: <IconRun />,
     },
     {
-      title: "And everything else",
-      description: "I just ran out of copy ideas. Accept my sincere apologies",
-      icon: <IconHeart />,
+      title: "Taktik",
+      description:
+        "Verstehe das Spiel besser und positioniere dich immer richtig zum Ball.",
+      icon: <IconUsers />,
+    },
+    {
+      title: "Koordination",
+      description:
+        "Optimiere deine Bewegungsabläufe für maximale Agilität und Balance.",
+      icon: <IconCoordination />,
+    },
+    {
+      title: "Spielintelligenz",
+      description:
+        "Lerne, Spielsituationen schneller zu lesen und die richtigen Entscheidungen zu treffen.",
+      icon: <IconBrain />,
     },
   ];
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  relative z-10 py-10 max-w-7xl mx-auto">
-      {features.map((feature, index) => (
-        <Feature key={feature.title} {...feature} index={index} />
-      ))}
+      {features.map((feature, index) => {
+        if (feature.title === "Dribbling") {
+          return (
+            <Link href="/dribbling" key={feature.title} className="block cursor-pointer">
+              <Feature {...feature} index={index} />
+            </Link>
+          );
+        }
+        return <Feature key={feature.title} {...feature} index={index} />;
+      })}
     </div>
   );
 }
